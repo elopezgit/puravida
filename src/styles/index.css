@@ -1,0 +1,486 @@
+@import 'tailwindcss';
+
+/* =========================================================================
+   HONGOS PURA VIDA — Sistema de diseno
+   Paleta extraida de las piezas reales de marca (etiquetas 50ml, carousel).
+   ========================================================================= */
+
+@theme {
+  /* Tinta / fondo */
+  --color-ink-950: #070605;
+  --color-ink-900: #0b0906;
+  --color-ink-850: #100d09;
+  --color-ink-800: #15110c;
+  --color-ink-700: #1d1811;
+  --color-ink-600: #2a2318;
+  --color-ink-500: #3a3122;
+
+  /* Oro de marca */
+  --color-gold-50: #fbf5e8;
+  --color-gold-100: #f3e6c9;
+  --color-gold-200: #e7cfa0;
+  --color-gold-300: #d6ae6a;
+  --color-gold-400: #c19a52;
+  --color-gold-500: #a8813f;
+  --color-gold-600: #85632f;
+  --color-gold-700: #5d4520;
+
+  /* Arcilla / tierra */
+  --color-clay-300: #c8a583;
+  --color-clay-400: #a57e5e;
+  --color-clay-500: #7d5f45;
+
+  /* Hueso */
+  --color-bone-50: #fdfbf7;
+  --color-bone-100: #f7efe2;
+  --color-bone-200: #e7ddcc;
+  --color-bone-300: #cfc3ae;
+  --color-bone-400: #9d9484;
+  /*
+   * bone-500 es el tono de las etiquetas chicas en mono. Con el valor anterior
+   * (#6f6759) daba 3.27:1 sobre el glass, por debajo del minimo AA (4.5:1):
+   * se leia difuminado, sobre todo en los precios tachados y los pies de foto.
+   * Este valor da 4.8:1 y sigue leyendose como "secundario".
+   */
+  --color-bone-500: #8b8273;
+  /*
+   * bone-600 existe porque el codigo lo pide (basura en carrito, placeholders,
+   * pies de nota), pero NO puede ser mas oscuro que bone-500: sobre esta tinta
+   * el limite de AA se agota en bone-500 (4.8:1) y un escalon mas oscuro cae
+   * directo a 3.3:1. En un tema oscuro, "todavia mas apagado" no se logra
+   * bajando el color sino bajando la opacidad, que es lo que se usa donde
+   * hace falta un tono todavia mas recession.
+   */
+  --color-bone-600: #8b8273;
+
+  /* Tipografia */
+  --font-display: 'Fraunces', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+
+  /* Curvas de movimiento */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Sombras */
+  --shadow-lift: 0 1px 0 0 rgb(255 255 255 / 0.06) inset, 0 24px 60px -20px rgb(0 0 0 / 0.75);
+  --shadow-deep: 0 40px 120px -40px rgb(0 0 0 / 0.9);
+
+  --radius-glass: 1.75rem;
+}
+
+/* =========================================================================
+   Base
+   ========================================================================= */
+@layer base {
+  *,
+  *::before,
+  *::after {
+    border-color: color-mix(in oklab, var(--color-gold-300) 12%, transparent);
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: auto;
+  }
+
+  /*
+   * Las secciones tienen id, asi que el salto nativo por ancla (#catalogo) las
+   * pegaria contra el borde superior y la nav fija se comeria el titulo. El
+   * margen de scroll las baja justas. Los botones de la nav usan scrollTo() con
+   * JS, pero un enlace directo, el boton "atras" del celu o recargar con hash
+   * en la URL pasan por acá.
+   */
+  section[id] {
+    scroll-margin-top: 5.75rem;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-ink-900);
+    color: var(--color-bone-100);
+    font-family: var(--font-sans);
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'ss01';
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-variation-settings: 'SOFT' 20, 'WONK' 1;
+    letter-spacing: -0.02em;
+    text-wrap: balance;
+  }
+
+  ::selection {
+    background: var(--color-gold-300);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 1px solid var(--color-gold-300);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Scrollbar de lujo */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--color-gold-500), var(--color-ink-600));
+    border-radius: 99px;
+    border: 3px solid var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--color-gold-300), var(--color-gold-600));
+  }
+
+  img,
+  video {
+    display: block;
+    max-width: 100%;
+  }
+
+  input,
+  button,
+  textarea,
+  select {
+    font: inherit;
+    color: inherit;
+  }
+}
+
+/* =========================================================================
+   Utilidades de marca
+   ========================================================================= */
+@utility container-x {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 88rem;
+  padding-inline: 1.25rem;
+  @media (width >= 48rem) {
+    padding-inline: 2.5rem;
+  }
+  @media (width >= 80rem) {
+    padding-inline: 3.5rem;
+  }
+}
+
+/* Cristal: la pieza central de la estetica */
+@utility glass {
+  position: relative;
+  background:
+    linear-gradient(
+      160deg,
+      color-mix(in oklab, var(--color-gold-200) 9%, transparent) 0%,
+      color-mix(in oklab, var(--color-bone-100) 3%, transparent) 38%,
+      color-mix(in oklab, var(--color-ink-800) 55%, transparent) 100%
+    );
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  border: 1px solid color-mix(in oklab, var(--color-gold-200) 16%, transparent);
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, var(--color-bone-50) 14%, transparent) inset,
+    0 -1px 0 0 color-mix(in oklab, var(--color-ink-950) 40%, transparent) inset,
+    0 30px 70px -30px rgb(0 0 0 / 0.85);
+}
+
+@utility glass-strong {
+  position: relative;
+  background: linear-gradient(
+    165deg,
+    color-mix(in oklab, var(--color-ink-700) 92%, transparent) 0%,
+    color-mix(in oklab, var(--color-ink-950) 96%, transparent) 100%
+  );
+  backdrop-filter: blur(34px) saturate(160%);
+  -webkit-backdrop-filter: blur(34px) saturate(160%);
+  border: 1px solid color-mix(in oklab, var(--color-gold-200) 14%, transparent);
+  box-shadow:
+    0 1px 0 0 color-mix(in oklab, var(--color-bone-50) 12%, transparent) inset,
+    0 40px 100px -40px rgb(0 0 0 / 0.95);
+}
+
+/* Filo de luz que recorre el borde */
+@utility edge-light {
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: linear-gradient(
+      140deg,
+      color-mix(in oklab, var(--color-gold-200) 55%, transparent),
+      transparent 35%,
+      transparent 65%,
+      color-mix(in oklab, var(--color-gold-400) 30%, transparent)
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+}
+
+/*
+ * Máscara de revelado tipográfico.
+ *
+ * El truco de "la palabra sube desde abajo" necesita un `overflow: hidden`, pero
+ * esa caja mide lo mismo que el interlineado. Con interlineado apretado
+ * (< 1) la caja queda más baja que la letra y se come las tildes y las colas:
+ * "Dónde" perdía el acento de la "é" y "transformación" la de la "ó".
+ *
+ * El remedio es darle aire arriba y abajo con `padding` y devolver ese aire al
+ * layout con `margin` negativo, así el recorte tiene espacio pero la tipografía
+ * no se mueve ni un píxel respecto de la versión sin animación.
+ */
+@utility text-mask {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  /* Aire para el tilde arriba y la cola abajo. */
+  padding-block: 0.08em 0.14em;
+  /* ...y se devuelve al layout, para que la línea no se mueva. */
+  margin-block: -0.08em -0.14em;
+}
+
+@utility text-gold-gradient {
+  /*
+   * El punto medio del degradado es el que manda: con gold-500 el centro de la
+   * palabra se veía apagado contra el fondo. Se sube el piso para que la línea
+   * dorada se lea igual de clara que las blancas.
+   */
+  color: var(--color-gold-200);
+  background: linear-gradient(
+    100deg,
+    var(--color-gold-50) 0%,
+    var(--color-gold-200) 42%,
+    var(--color-gold-300) 72%,
+    var(--color-gold-100) 100%
+  );
+  background-size: 220% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /*
+   * En componentes como SplitText, las palabras se envuelven en .text-mask y
+   * motion.span (con overflow y transforms propios). Esos elementos hijos
+   * heredaban color: transparent pero no el background-clip del padre,
+   * volviéndose invisibles. Aplicando el gradiente y color a los spans internos
+   * se asegura máxima legibilidad y brillo dorado.
+   */
+  & span {
+    color: var(--color-gold-200);
+    background: linear-gradient(
+      100deg,
+      var(--color-gold-50) 0%,
+      var(--color-gold-200) 42%,
+      var(--color-gold-300) 72%,
+      var(--color-gold-100) 100%
+    );
+    background-size: 220% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 400;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--color-gold-300) 78%, transparent);
+}
+
+/* Grano de pelicula: quita la.planitud digital */
+@utility grain {
+  position: relative;
+  &::before {
+    content: '';
+    position: absolute;
+    inset: -150%;
+    pointer-events: none;
+    opacity: 0.32;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.55'/%3E%3C/svg%3E");
+    animation: grain-shift 6s steps(6) infinite;
+    mix-blend-mode: overlay;
+  }
+}
+
+@utility mask-fade-x {
+  mask-image: linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent);
+}
+
+@utility mask-fade-b {
+  mask-image: linear-gradient(180deg, #000 62%, transparent);
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* =========================================================================
+   Animaciones de base
+   ========================================================================= */
+@keyframes grain-shift {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  20% {
+    transform: translate3d(-4%, 3%, 0);
+  }
+  40% {
+    transform: translate3d(3%, -4%, 0);
+  }
+  60% {
+    transform: translate3d(-3%, -2%, 0);
+  }
+  80% {
+    transform: translate3d(4%, 2%, 0);
+  }
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes aurora-drift {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+    opacity: 0.55;
+  }
+  33% {
+    transform: translate3d(6%, -4%, 0) scale(1.12);
+    opacity: 0.75;
+  }
+  66% {
+    transform: translate3d(-5%, 5%, 0) scale(0.95);
+    opacity: 0.45;
+  }
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+@keyframes float-slow {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-14px) rotate(0.6deg);
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.7;
+  }
+  70% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+@keyframes scroll-hint {
+  0% {
+    transform: translateY(-100%);
+  }
+  55%,
+  100% {
+    transform: translateY(100%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee-x var(--dur, 42s) linear infinite;
+}
+.animate-aurora {
+  animation: aurora-drift 22s var(--ease-in-out-quint) infinite;
+}
+.animate-float-slow {
+  animation: float-slow 9s ease-in-out infinite;
+}
+.animate-pulse-ring {
+  animation: pulse-ring 2.6s var(--ease-out-expo) infinite;
+}
+.animate-scroll-hint {
+  animation: scroll-hint 2.2s var(--ease-in-out-quint) infinite;
+}
+
+/* =========================================================================
+   Puntero
+   Se usa el cursor nativo del sistema en toda la pagina. Un puntero propio
+   con retardo se siente lento y desorienta, y en táctil directamente no
+   existe. Los botones se distinguen por su forma y por el brillo del borde.
+   ========================================================================= */
+@media (hover: hover) and (pointer: fine) {
+  a,
+  button,
+  [role='button'],
+  summary,
+  label {
+    cursor: pointer;
+  }
+
+  button:disabled,
+  [aria-disabled='true'] {
+    cursor: not-allowed;
+  }
+
+  /* Donde el puntero es texto (precios, mailto, tel) */
+  input,
+  textarea,
+  select {
+    cursor: text;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="es-AR" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B0906" />
+    <meta name="color-scheme" content="dark" />
+
+    <title>Hongos Pura Vida — Elixires adaptógenos de extracción cíclica</title>
+    <meta
+      name="description"
+      content="Elixires de hongos medicinales elaborados con extracción cíclica y cavitación acústica. Reishi, Cordyceps, Melena de León, Ashwagandha, Tremella y más. Envíos a todo el país."
+    />
+    <meta name="author" content="Hongos Pura Vida" />
+    <link rel="canonical" href="https://hongospuravida.com/" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Hongos Pura Vida" />
+    <meta property="og:locale" content="es_AR" />
+    <meta property="og:title" content="Hongos Pura Vida — Medicina ancestral, accesible y llena de vida" />
+    <meta
+      property="og:description"
+      content="Elixires adaptógenos de extracción cíclica y cavitación acústica. Envíos a todo el país."
+    />
+    <meta property="og:image" content="/media/carrusel-3.webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/favicon.svg" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..900;1,9..144,300..900&family=Inter:wght@300..800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- CurtainBg / marca inicial mientras carga el motor tipografico -->
+    <style>
+      html { background: #0b0906; }
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: grid;
+        place-items: center;
+        background: #0b0906;
+        transition: opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1) 0.1s;
+      }
+      #boot[data-done='1'] { opacity: 0; pointer-events: none; }
+      #boot b {
+        font-family: 'Fraunces', Georgia, serif;
+        font-weight: 300;
+        font-size: 12px;
+        letter-spacing: 0.5em;
+        color: #d6ae6a;
+        text-transform: uppercase;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot { display: none; }
+      }
+    </style>
+
+    <!--
+      Red de seguridad del curtain.
+
+      #boot se saca cuando el Preloader de React avisa que terminó. Si el JS
+      llegara a fallar —bundle roto, error de red, extensión bloqueando
+      scripts— nadie lo saca y la página queda en negro para siempre, sin
+      explicar por qué. Este script lo levanta igual, pasado un plazo.
+
+      4,2 s es posterior al recorrido normal del Preloader (2,4 s), así que en
+      el caso sano no hace nada. El curtain además tiene `pointer-events: none`
+      al apagarse, así que nunca frena el scroll aunque quede el nodo.
+    -->
+    <script>
+      ;(function () {
+        function lift() {
+          var b = document.getElementById('boot')
+          if (!b) return
+          b.setAttribute('data-done', '1')
+          window.setTimeout(function () {
+            b.parentNode && b.parentNode.removeChild(b)
+          }, 800)
+        }
+        /* Si el documento terminó de cargar y el curtain sigue puesto, algo
+           falló: se levanta igual para no dejar la web en negro. */
+        if (document.readyState === 'complete') window.setTimeout(lift, 1200)
+        else window.addEventListener('load', function () { window.setTimeout(lift, 1200) })
+        /* Y un plazo máximo, por si el evento load nunca llega. */
+        window.setTimeout(lift, 4200)
+      })()
+    </script>
+  </head>
+  <body>
+    <div id="boot" aria-hidden="true"><b>Pura Vida</b></div>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
