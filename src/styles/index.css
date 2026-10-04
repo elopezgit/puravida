@@ -169,6 +169,22 @@
     font: inherit;
     color: inherit;
   }
+
+  /* Ocultar badge y drawer inyectados por Netlify */
+  #netlify-drawer,
+  iframe#netlify-drawer,
+  iframe[id*="netlify"],
+  [data-netlify-drawer],
+  [data-netlify-preview-drawer],
+  .netlify-drawer,
+  netlify-drawer,
+  [class*="netlify-drawer"],
+  [id*="netlify-drawer"] {
+    display: none !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+  }
 }
 
 /* =========================================================================
